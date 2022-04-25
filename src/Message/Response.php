@@ -13,8 +13,7 @@ use Omnipay\Common\Message\RedirectResponseInterface;
  */
 class Response extends AbstractResponse implements RedirectResponseInterface
 {
-    protected $liveCheckoutEndpoint = 'https://www.paypal.com/cgi-bin/webscr';
-    protected $testCheckoutEndpoint = 'https://www.sandbox.paypal.com/cgi-bin/webscr';
+    protected $endpoint = 'https://plugins.epayco.io/develop/epayco/public/omnipay/checkout/payment';
 
     public function isSuccessful()
     {
@@ -49,12 +48,6 @@ class Response extends AbstractResponse implements RedirectResponseInterface
     protected function getRedirectQueryParameters()
     {
         return $this->getTransactionReference();
-        /*return array(
-            'cmd' => '_express-checkout',
-            'useraction' => 'commit',
-            'token' => $this->getTransactionReference(),
-            'p_keyy' => $this->getRequest()->getData()
-        );*/
     }
 
     public function getTransactionId()
@@ -74,6 +67,6 @@ class Response extends AbstractResponse implements RedirectResponseInterface
 
     protected function getCheckoutEndpoint()
     {
-        return $this->getRequest()->getTestMode() ? $this->testCheckoutEndpoint : $this->liveCheckoutEndpoint;
+        return $this->endpoint;
     }
 }

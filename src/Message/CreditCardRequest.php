@@ -3,6 +3,7 @@ namespace Omnipay\Epayco\Message;
 
 use Omnipay\Common\Message\AbstractRequest;
 use Omnipay\Common\Message\ResponseInterface;
+use Omnipay\Epayco\Gateway;
 
 /**
  * Epayco Authorize/Purchase Request
@@ -22,38 +23,104 @@ class CreditCardRequest extends AbstractRequest
         return $this->setParameter('username', $value);
     }
 
-    public function getPassword()
+    public function getPkey()
     {
-        return $this->getParameter('password');
+        return $this->getParameter('pkey');
     }
 
-    public function setPassword($value)
+    public function setPkey($value)
     {
-        return $this->setParameter('password', $value);
+        return $this->setParameter('pkey', $value);
     }
 
-    public function getSignature()
+    public function getPublicKey()
     {
-        return $this->getParameter('signature');
+        return $this->getParameter('publicKey');
     }
 
-    public function setSignature($value)
+    public function setPublicKey($value)
     {
-        return $this->setParameter('signature', $value);
+        return $this->setParameter('publicKey', $value);
+    }
+
+    public function getFirstName()
+    {
+        return $this->getParameter('firstName');
+    }
+
+    public function setFirstName($value)
+    {
+        return $this->setParameter('firstName', $value);
+    }
+
+    public function getLastName()
+    {
+        return $this->getParameter('lastName');
+    }
+
+    public function setLastName($value)
+    {
+        return $this->setParameter('lastName', $value);
+    }
+
+    public function getEmail()
+    {
+        return $this->getParameter('email');
+    }
+
+    public function setEmail($value)
+    {
+        return $this->setParameter('email', $value);
+    }
+
+    public function getAddress()
+    {
+        return $this->getParameter('address');
+    }
+
+    public function setAddress($value)
+    {
+        return $this->setParameter('address', $value);
+    }
+
+    /**
+     * Getter: get cart items.
+     *
+     * @return array
+     */
+    public function getCart()
+    {
+        return $this->getParameter('cart');
+    }
+
+    /**
+     * @param array $value
+     *
+     * @return $this
+     */
+    public function setCart($value)
+    {
+        return $this->setParameter('cart', $value);
     }
 
     public function getData()
     {
         $this->validate('amount', 'returnUrl', 'cancelUrl');
-        $data = $this->getBaseData();
+        $baseData = $this->getBaseData();
+        $data['public_key'] = $baseData['publicKey'];
         $data['amount'] = $this->getAmount();
         $data['currency'] = $this->getCurrency();
+        $data['cancelurl'] = $this->getCancelUrl();
+        $data['retururl'] = $this->getReturnUrl();
+        $data['notifyUrl'] = $this->getNotifyUrl();
         $data['transactionId'] = $this->getTransactionId();
         $data['description'] = $this->getDescription();
-        $data['retururl'] = $this->getReturnUrl();
-        $data['cancelurl'] = $this->getCancelUrl();
-        $data['notifyUrl'] = $this->getNotifyUrl();
+        $data['firstName'] = $this->getFirstName();
+        $data['lastName'] = $this->getLastName();
+        $data['email'] = $this->getEmail();
+        $data['address'] = $this->getAddress();
         $data['test'] = $this->getTestMode();
+        $data['cart'] = $this->getCart();
 
         return $data;
     }
@@ -71,8 +138,8 @@ class CreditCardRequest extends AbstractRequest
     {
         $data = array();
         $data['user'] = $this->getUsername();
-        $data['password'] = $this->getPassword();
-        $data['siganture'] = $this->getSignature();
+        $data['pkey'] = $this->getPkey();
+        $data['publicKey'] = $this->getPublicKey();
 
         return $data;
     }

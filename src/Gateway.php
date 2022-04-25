@@ -72,8 +72,8 @@ class Gateway extends AbstractGateway
     {
         return array(
             'username' => '',
-            'password' => '',
-            'signature' => '',
+            'pkey' => '',
+            'publicKey' => '',
             'testMode' => false,
         );
     }
@@ -88,24 +88,73 @@ class Gateway extends AbstractGateway
         return $this->setParameter('username', $value);
     }
 
-    public function getPassword()
+    public function getPkey()
     {
-        return $this->getParameter('password');
+        return $this->getParameter('pkey');
     }
 
-    public function setPassword($value)
+    public function setPkey($value)
     {
-        return $this->setParameter('password', $value);
+        return $this->setParameter('pkey', $value);
     }
 
-    public function getSignature()
+    public function getPublicKey()
     {
-        return $this->getParameter('signature');
+        return $this->getParameter('publicKey');
     }
 
-    public function setSignature($value)
+    public function setPublicKey($value)
     {
-        return $this->setParameter('signature', $value);
+        return $this->setParameter('publicKey', $value);
+    }
+
+    /**
+     * Getter: get cart items.
+     *
+     * @return array
+     */
+    public function getCart()
+    {
+        return $this->getParameter('cart');
+    }
+
+    /**
+     * Array of cart items.
+     *
+     * format:
+     * $gateway->setCart(array(
+     * array(
+     * 'type'        => 'product',
+     * 'name'        => 'Product 1',
+     * 'description' => 'Description of product 1',
+     * 'quantity'    => 2,
+     * 'price'       => 22,
+     * 'tangible'    => 'N',
+     * 'product_id'  => 12345,
+     * 'recurrence'  => '1 Week',
+     * 'duration'    => '1 Year',
+     * 'startup_fee' => '5',
+     * ),
+     * array(
+     * 'type'     => 'product',
+     * 'name'     => 'Product 2',
+     * 'quantity' => 1,
+     * 'price'    => 10,
+     * 'tangible' => 'N'
+     * 'product_id'  => 45678,
+     * 'recurrence'  => '2 Week',
+     * 'duration'    => '1 Year',
+     * 'startup_fee' => '3',
+     * )
+     * ));
+     *
+     * @param array $value
+     *
+     * @return $this
+     */
+    public function setCart($value)
+    {
+        return $this->setParameter('cart', $value);
     }
 
     public function authorize(array $parameters = array())
