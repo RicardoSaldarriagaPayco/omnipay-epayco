@@ -4,57 +4,89 @@ use Omnipay\Omnipay;
 
 $gateway = Omnipay::create('Epayco');
 
-//$gateway = Omnipay::create('PayPal_Express');
-$gateway->setUsername('ric.salda.94_api1.gmail.com');
-$gateway->setPassword('FQFAV7GUVEN89YQQ');
-$gateway->setSignature('AQXugmPcI5E1bK.j8n3yIxEPLGV6A4YS9-xgC8Cve7pIfug0nrPxUFTE');
-$gateway->setTestMode('sandbox');
+$gateway->setUsername('19520');
+$gateway->setPkey('52beec4a1212c2ffcc702dd565939b4c4707155b');
+$gateway->setPublicKey('c84ad754c728bfb10af2c1c3d1594106');
+$gateway->setLang('en');
+$gateway->setTestMode(true);
 
-$formData = [
-    'number' => '4242424242424242',
-    'expiryMonth' => '6',
-    'expiryYear' => '2025',
-    'cvv' => '123'
-];
+$cart = array();
 
+$i = 0;
+
+$product_id = 123;
+$cart[] = array(
+    'name' => 'camisa rosa',
+    'quantity' => 2,
+    'type' => 'product',
+    'price' => round(6.99, 2),
+);
+$cart[1] = array(
+    'name' => 'jean azul',
+    'quantity' => 1,
+    'type' => 'product',
+    'price' => round(12.99, 2),
+);
+$cart[] = array(
+    'name' => 'Shipping Fee',
+    'quantity' => 1,
+    'type' => 'shipping',
+    'price' => round(5.99, 2),
+);
+$cart[] = array(
+    'name' => 'Discount',
+    'quantity' => 1,
+    'type' => 'coupon',
+    'price' => round(2.98, 2),
+);
+$cart[] = array(
+    'name' => 'Tax Fee',
+    'type' => 'tax',
+    'quantity' => 1,
+    'price' => round(1.02, 2),
+);
+$product_price=0;
+$tax = 0;
+foreach ($cart as $order_item_id => $product) {
+    if($product['type'] == "tax"){
+        $tax += $product['price'];
+    }
+    if($product['type'] == "coupon"){
+        $product_price -= $product['price'] * $product['quantity'];
+    }else{
+        $product_price += $product['price'] * $product['quantity'];
+    }
+    $i++;
+}
+$product_subtotal = $product_price - $tax;
+$gateway->setCart($cart);
 $response = $gateway->purchase(
     [
-        'amount' => '10.00',
+        'amount' => $product_price,
+        'subTotal' => $product_subtotal,
+        'tax' => $tax,
         'currency' => 'USD',
-        //'card' => $formData,
         'cancelUrl' => 'www.sampĺe.cancel',
         'returnUrl' => 'www.sampĺe.return',
         'notifyUrl' => 'www.sample.norify',
         'transactionId' => '12341234',
-        'description' => 'pago de prueba'
+        'description' => 'pago de prueba',
+        'firstName' => 'Ricardo',
+        'lastName' => 'Saldarriaga',
+        'email' => 'ricardo.saldarriaga@epayco.com',
+        'address' => 'calle 109 # 123',
+        'country' => 'CO'
     ]
 )->send();
 
 // Process response
-if ($response->isSuccessful()) {
-
-    // Payment was successful
-    var_dump($response->getData());
-    echo '<br>';
-    var_dump($response->getCardReference());
-    echo '<br>';
-    var_dump($response->getTransactionReference());
-    echo '<br>';
-    var_dump($response->getMessage());
-    echo '<br>';
-
-    // print_r($response);
-
-} elseif ($response->isRedirect()) {
-
+if ($response->isRedirect()) {
     $url = $response->getRedirectUrl();
 // for a form redirect, you can also call the following method:
     $data = $response->getRedirectData();
     // Redirect to offsite payment gateway
     echo $response->redirect();
-
 } else {
-
     // Payment failed
     echo $response->getMessage();
 }
