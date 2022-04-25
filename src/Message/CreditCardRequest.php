@@ -111,7 +111,7 @@ class CreditCardRequest extends AbstractRequest
         $data['amount'] = $this->getAmount();
         $data['currency'] = $this->getCurrency();
         $data['cancelurl'] = $this->getCancelUrl();
-        $data['retururl'] = $this->getReturnUrl();
+        $data['returnurl'] = $this->getReturnUrl();
         $data['notifyUrl'] = $this->getNotifyUrl();
         $data['transactionId'] = $this->getTransactionId();
         $data['description'] = $this->getDescription();
