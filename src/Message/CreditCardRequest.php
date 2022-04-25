@@ -43,6 +43,16 @@ class CreditCardRequest extends AbstractRequest
         return $this->setParameter('publicKey', $value);
     }
 
+    public function getLang()
+    {
+        return $this->getParameter('lang');
+    }
+
+    public function setLang($value)
+    {
+        return $this->setParameter('lang', $value);
+    }
+
     public function getFirstName()
     {
         return $this->getParameter('firstName');
@@ -83,6 +93,36 @@ class CreditCardRequest extends AbstractRequest
         return $this->setParameter('address', $value);
     }
 
+    public function getSubTotal()
+    {
+        return $this->getParameter('subTotal');
+    }
+
+    public function setSubTotal($value)
+    {
+        return $this->setParameter('subTotal', $value);
+    }
+
+    public function getTax()
+    {
+        return $this->getParameter('tax');
+    }
+
+    public function setTax($value)
+    {
+        return $this->setParameter('tax', $value);
+    }
+
+    public function getCountry()
+    {
+        return $this->getParameter('country');
+    }
+
+    public function setCountry($value)
+    {
+        return $this->setParameter('country', $value);
+    }
+
     /**
      * Getter: get cart items.
      *
@@ -105,10 +145,13 @@ class CreditCardRequest extends AbstractRequest
 
     public function getData()
     {
-        $this->validate('amount', 'returnUrl', 'cancelUrl');
+        $this->validate('amount', 'returnUrl', 'notifyUrl');
         $baseData = $this->getBaseData();
         $data['public_key'] = $baseData['publicKey'];
+        $data['lang'] = $baseData['lang'];
         $data['amount'] = $this->getAmount();
+        $data['subTotal'] = $this->getSubTotal();
+        $data['tax'] = $this->getTax();
         $data['currency'] = $this->getCurrency();
         $data['cancelurl'] = $this->getCancelUrl();
         $data['returnurl'] = $this->getReturnUrl();
@@ -121,6 +164,7 @@ class CreditCardRequest extends AbstractRequest
         $data['address'] = $this->getAddress();
         $data['test'] = $this->getTestMode();
         $data['cart'] = $this->getCart();
+        $data['country'] = $this->getCountry();
 
         return $data;
     }
@@ -140,6 +184,7 @@ class CreditCardRequest extends AbstractRequest
         $data['user'] = $this->getUsername();
         $data['pkey'] = $this->getPkey();
         $data['publicKey'] = $this->getPublicKey();
+        $data['lang'] = $this->getLang();
 
         return $data;
     }
