@@ -4,9 +4,9 @@ use Omnipay\Omnipay;
 
 $gateway = Omnipay::create('Epayco');
 
-$gateway->setUsername('19520');
-$gateway->setPkey('52beec4a1212c2ffcc702dd565939b4c4707155b');
-$gateway->setPublicKey('c84ad754c728bfb10af2c1c3d1594106');
+$gateway->setUsername('xxxx');
+$gateway->setPkey('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+$gateway->setPublicKey('xxxxxxxxxxxxxxxxxx');
 $gateway->setLang('en');
 $gateway->setTestMode(true);
 
